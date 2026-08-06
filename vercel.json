@@ -1,0 +1,12 @@
+{
+  "rewrites": [
+    {
+      "source": "/n8n-proxy/:path*",
+      "destination": "https://amansinghhhhh.app.n8n.cloud/:path*"
+    },
+    {
+      "source": "/(.*)",
+      "destination": "/index.html"
+    }
+  ]
+}

@@ -33,8 +33,28 @@ function parseWebhookInput(input) {
   }
 
   const base = baseUrl || 'https://amansinghhhhh.app.n8n.cloud';
+  const proxyBase = '/n8n-proxy';
   const rawCandidates = [];
 
+  // Proxy candidates first (bypasses browser CORS policy on Vercel and local dev)
+  if (str.startsWith('http://') || str.startsWith('https://')) {
+    try {
+      const parsed = new URL(str);
+      const proxiedUrl = `${proxyBase}${parsed.pathname}`;
+      rawCandidates.push({ url: proxiedUrl, isFormData: str.includes('/form') });
+    } catch {
+      /* ignore */
+    }
+  }
+
+  rawCandidates.push(
+    { url: `${proxyBase}/form/${id}`, isFormData: true },
+    { url: `${proxyBase}/form-test/${id}`, isFormData: true },
+    { url: `${proxyBase}/webhook/${id}`, isFormData: false },
+    { url: `${proxyBase}/webhook-test/${id}`, isFormData: false }
+  );
+
+  // Direct URL candidates fallback
   if (str.startsWith('http://') || str.startsWith('https://')) {
     rawCandidates.push({ url: str, isFormData: str.includes('/form') });
   }
