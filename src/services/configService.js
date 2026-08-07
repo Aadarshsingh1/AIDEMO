@@ -50,15 +50,15 @@ const ENV_DEFAULTS = {
   [CONFIG_KEYS.CORDISO_SHEET_EDIT_URL]: import.meta.env.VITE_CORDISO_SHEET_EDIT_URL  || '',
   [CONFIG_KEYS.MAPS_SHEET_CSV_URL]:     import.meta.env.VITE_MAPS_SHEET_CSV_URL      || '',
   [CONFIG_KEYS.CORDISO_SHEET_CSV_URL]:  import.meta.env.VITE_CORDISO_SHEET_CSV_URL   || '',
-  [CONFIG_KEYS.WEBHOOK_RAG_UPLOAD]:     import.meta.env.VITE_WEBHOOK_RAG_UPLOAD      || '',
-  [CONFIG_KEYS.WEBHOOK_RAG_CHAT]:       import.meta.env.VITE_WEBHOOK_RAG_CHAT        || '',
+  [CONFIG_KEYS.WEBHOOK_RAG_UPLOAD]:     import.meta.env.VITE_WEBHOOK_RAG_UPLOAD      || 'b7430c49-07df-4ea8-971c-4340d99bc456',
+  [CONFIG_KEYS.WEBHOOK_RAG_CHAT]:       import.meta.env.VITE_WEBHOOK_RAG_CHAT        || '911eeda3-33e7-42b7-8054-4cffc04f36a4',
   // No Action Plan
   [CONFIG_KEYS.WEBHOOK_NO_ACTION_PLAN]:        import.meta.env.VITE_WEBHOOK_NO_ACTION_PLAN         || '71a1b559-084e-46a1-94cb-6f158d17d2cc',
   [CONFIG_KEYS.NO_ACTION_ALL_LEADS_SHEET_URL]: import.meta.env.VITE_NO_ACTION_ALL_LEADS_SHEET_URL  || 'https://docs.google.com/spreadsheets/d/1zO7j2VMY0uwnNCEl__Ugf3xdg26locz2qgc9pmCrEPM/edit?gid=1959112082#gid=1959112082',
   [CONFIG_KEYS.NO_ACTION_ALL_LEADS_CSV_URL]:   import.meta.env.VITE_NO_ACTION_ALL_LEADS_CSV_URL    || 'https://docs.google.com/spreadsheets/d/e/2PACX-1vT8QuJUoBvfGTzDnG-tylVs0403vtFKv_9APjTwWpAzzqTszjuyJ4JbR71Zg5KiwcRKCxcdk1m1haOZ/pub?gid=1959112082&single=true&output=csv',
   [CONFIG_KEYS.NO_ACTION_AI_LEADS_CSV_URL]:    import.meta.env.VITE_NO_ACTION_AI_LEADS_CSV_URL     || 'https://docs.google.com/spreadsheets/d/1RyMWMXGsJzJFfhWndADyRqCvtcarf4NdODfOtKroDjA/export?format=csv&gid=0',
   // Lead Qualification
-  [CONFIG_KEYS.WEBHOOK_LEAD_QUALIFICATION]:        import.meta.env.VITE_WEBHOOK_LEAD_QUALIFICATION        || '',
+  [CONFIG_KEYS.WEBHOOK_LEAD_QUALIFICATION]:        import.meta.env.VITE_WEBHOOK_LEAD_QUALIFICATION        || '37994882-3837-4254-b347-58d217c8db25',
   [CONFIG_KEYS.QUALIFICATION_ALL_LEADS_SHEET_URL]: import.meta.env.VITE_QUALIFICATION_ALL_LEADS_SHEET_URL || 'https://docs.google.com/spreadsheets/d/1Mxh_uGDv9WY_XiA8gnQbsN1c5nkVEsIMn6PLsCVmIgs/edit?gid=0#gid=0',
   [CONFIG_KEYS.QUALIFICATION_ALL_LEADS_CSV_URL]:   import.meta.env.VITE_QUALIFICATION_ALL_LEADS_CSV_URL   || 'https://docs.google.com/spreadsheets/d/e/2PACX-1vRd6yDTCzHi5WM9ZzI0IqmRzXBM1HkDAu72JaUrQwCuEITBf3nSp-3QVqIa988GcHvLJrmla4Tuw0L8/pub?gid=0&single=true&output=csv',
   [CONFIG_KEYS.QUALIFICATION_AI_LEADS_CSV_URL]:    import.meta.env.VITE_QUALIFICATION_AI_LEADS_CSV_URL    || 'https://docs.google.com/spreadsheets/d/10pldJMQRNIbJMSqS0aNBFsSYWlvok6EiGDtph6-jseU/export?format=csv&gid=0',
