@@ -20,14 +20,14 @@ export default function Dashboard({ onRunWorkflow }) {
 
 
   return (
-    <div className="page" style={{ padding: 0 }}>
+    <div className="page dashboard-page" style={{ padding: 0 }}>
 
       {/* ── Hero Banner ── */}
       <div style={{
         position: 'relative',
         overflow: 'hidden',
         background: 'linear-gradient(135deg, #0f172a 0%, #1e1b4b 45%, #0f172a 100%)',
-        padding: '52px 48px 56px',
+        padding: '24px 32px 28px',
         color: '#fff',
       }}>
         {/* Decorative orbs */}
@@ -50,14 +50,14 @@ export default function Dashboard({ onRunWorkflow }) {
             display: 'inline-flex', alignItems: 'center', gap: 7,
             background: 'rgba(99,102,241,0.18)',
             border: '1px solid rgba(99,102,241,0.4)',
-            borderRadius: 99, padding: '5px 14px',
-            fontSize: 12, fontWeight: 600,
+            borderRadius: 99, padding: '4px 12px',
+            fontSize: 11.5, fontWeight: 600,
             color: '#a5b4fc',
-            marginBottom: 22,
+            marginBottom: 10,
             backdropFilter: 'blur(4px)',
           }}>
             <span style={{
-              width: 7, height: 7, borderRadius: '50%',
+              width: 6, height: 6, borderRadius: '50%',
               background: '#818cf8',
               boxShadow: '0 0 8px #818cf8',
               animation: 'pulse-glow 2s infinite',
@@ -67,9 +67,9 @@ export default function Dashboard({ onRunWorkflow }) {
 
           {/* Heading */}
           <h1 style={{
-            fontSize: 42, fontWeight: 800, lineHeight: 1.15,
+            fontSize: 28, fontWeight: 800, lineHeight: 1.15,
             letterSpacing: '-0.02em',
-            marginBottom: 16,
+            margin: 0,
             background: 'linear-gradient(135deg, #ffffff 0%, #c7d2fe 50%, #a5b4fc 100%)',
             WebkitBackgroundClip: 'text',
             WebkitTextFillColor: 'transparent',
@@ -83,8 +83,8 @@ export default function Dashboard({ onRunWorkflow }) {
       </div>
 
       {/* ── Workflow Grid ── */}
-      <div style={{ padding: '32px 32px 40px' }}>
-        <div className="section-header">
+      <div style={{ padding: '20px 32px 24px' }}>
+        <div className="section-header" style={{ marginBottom: 14 }}>
           <div>
             <div className="section-title">Automation Workflows</div>
             <div className="section-subtitle">Click any workflow card to open and run it</div>
