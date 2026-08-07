@@ -91,9 +91,10 @@ export function formatGoogleSheetCsvUrl(rawUrl) {
 export async function fetchSheetLeads(csvUrl) {
   const raw = csvUrl || SHEET_CSV_URL;
   if (!raw) return { success: false, error: 'No CSV URL configured', data: [] };
-  const url = formatGoogleSheetCsvUrl(raw);
+  const baseUrl = formatGoogleSheetCsvUrl(raw);
+  const cacheBustUrl = `${baseUrl}${baseUrl.includes('?') ? '&' : '?'}_t=${Date.now()}`;
   try {
-    const res = await axios.get(url, { timeout: 15000 });
+    const res = await axios.get(cacheBustUrl, { timeout: 15000 });
     const rows = parseCSV(res.data);
     return { success: true, data: rows };
   } catch (err) {

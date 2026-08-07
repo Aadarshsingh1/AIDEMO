@@ -86,10 +86,28 @@ export async function triggerWorkflow(webhookInput, formData) {
 
   const { baseUrl, candidates } = parseWebhookInput(webhookInput);
 
-  // Build FormData payload (n8n Form Trigger requires multipart/form-data)
+  // Build FormData & JSON payloads with all key format variations
+  // (ensures n8n Form Trigger node matches field identifiers regardless of capitalization/casing)
   const body = new FormData();
-  Object.entries(formData || {}).forEach(([key, val]) => {
-    body.append(key, String(val ?? ''));
+  const jsonPayload = {};
+
+  Object.entries(formData || {}).forEach(([key, val], idx) => {
+    const strVal = String(val ?? '');
+    const keysToTry = new Set([
+      key,
+      `field-${idx}`,
+      `field_${idx}`,
+      key.toLowerCase(),
+      key.split(' ').map(w => w.charAt(0).toUpperCase() + w.slice(1).toLowerCase()).join(' '),
+      key.replace(/(?:^\w|[A-Z]|\b\w)/g, (letter, index) => index === 0 ? letter.toLowerCase() : letter.toUpperCase()).replace(/\s+/g, ''),
+      key.toLowerCase().replace(/\s+/g, '_'),
+      key.toLowerCase().replace(/\s+/g, '-'),
+    ]);
+
+    keysToTry.forEach(k => {
+      body.append(k, strVal);
+      jsonPayload[k] = strVal;
+    });
   });
 
   let lastError = null;
@@ -102,7 +120,7 @@ export async function triggerWorkflow(webhookInput, formData) {
     try {
       console.log(`[n8nService] Sending ${candidate.isFormData ? 'multipart/form-data' : 'JSON'} to ${targetUrl}`);
       
-      const payload = candidate.isFormData ? body : formData;
+      const payload = candidate.isFormData ? body : jsonPayload;
       // Omit Content-Type header for FormData so Axios auto-generates multipart boundary
       const headers = candidate.isFormData
         ? undefined
