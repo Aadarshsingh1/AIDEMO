@@ -98,7 +98,7 @@ export async function triggerWorkflow(webhookInput, formData) {
   let lastError = null;
 
   for (const candidate of candidates) {
-    const targetUrl = import.meta.env.DEV && candidate.url.startsWith(baseUrl)
+    const targetUrl = candidate.url.startsWith(baseUrl)
       ? candidate.url.replace(baseUrl, '/n8n-proxy')
       : candidate.url;
 
@@ -152,7 +152,7 @@ export async function triggerWorkflowWithFile(webhookInput, file, fieldName = 'L
   let lastError = null;
 
   for (const candidate of candidates) {
-    const targetUrl = import.meta.env.DEV && candidate.url.startsWith(baseUrl)
+    const targetUrl = candidate.url.startsWith(baseUrl)
       ? candidate.url.replace(baseUrl, '/n8n-proxy')
       : candidate.url;
 
