@@ -12,7 +12,7 @@ import { getConfig, CONFIG_KEYS } from './services/configService';
 import { getWorkflows } from './data/workflows';
 
 const PAGE_META = {
-  dashboard:            { title: 'Workflow Hub',          subtitle: '' },
+  dashboard:            { title: '',                      subtitle: '' },
   ai:                   { title: 'AI Lead Generator',     subtitle: 'Cordiso B2B lead generation powered by AI' },
   social:               { title: 'Social Media Leads',    subtitle: 'Leads scraped from Reddit, Instagram & more' },
   rag:                  { title: 'RAG Chat',              subtitle: 'Chat with your document knowledge base' },
