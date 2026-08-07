@@ -87,7 +87,6 @@ export default function Dashboard({ onRunWorkflow }) {
         <div className="section-header" style={{ marginBottom: 14 }}>
           <div>
             <div className="section-title">Automation Workflows</div>
-            <div className="section-subtitle">Click any workflow card to open and run it</div>
           </div>
           {!N8N_CONFIGURED && (
             <span style={{
