@@ -86,10 +86,10 @@ export async function triggerWorkflow(webhookInput, formData) {
 
   const { baseUrl, candidates } = parseWebhookInput(webhookInput);
 
-  // Build URLSearchParams payload for form endpoints (application/x-www-form-urlencoded)
-  const urlEncodedBody = new URLSearchParams();
+  // Build FormData payload (n8n Form Trigger requires multipart/form-data)
+  const body = new FormData();
   Object.entries(formData || {}).forEach(([key, val]) => {
-    urlEncodedBody.append(key, String(val ?? ''));
+    body.append(key, String(val ?? ''));
   });
 
   let lastError = null;
@@ -100,11 +100,12 @@ export async function triggerWorkflow(webhookInput, formData) {
       : candidate.url;
 
     try {
-      console.log(`[n8nService] Sending ${candidate.isFormData ? 'application/x-www-form-urlencoded' : 'JSON'} to ${targetUrl}`);
+      console.log(`[n8nService] Sending ${candidate.isFormData ? 'multipart/form-data' : 'JSON'} to ${targetUrl}`);
       
-      const payload = candidate.isFormData ? urlEncodedBody : formData;
+      const payload = candidate.isFormData ? body : formData;
+      // Omit Content-Type header for FormData so Axios auto-generates multipart boundary
       const headers = candidate.isFormData
-        ? { 'Content-Type': 'application/x-www-form-urlencoded' }
+        ? undefined
         : { 'Content-Type': 'application/json' };
 
       const res = await axios.post(targetUrl, payload, {
