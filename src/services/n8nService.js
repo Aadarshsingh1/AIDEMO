@@ -86,10 +86,10 @@ export async function triggerWorkflow(webhookInput, formData) {
 
   const { baseUrl, candidates } = parseWebhookInput(webhookInput);
 
-  // Build FormData payload
-  const body = new FormData();
+  // Build URLSearchParams payload for form endpoints (application/x-www-form-urlencoded)
+  const urlEncodedBody = new URLSearchParams();
   Object.entries(formData || {}).forEach(([key, val]) => {
-    body.append(key, String(val ?? ''));
+    urlEncodedBody.append(key, String(val ?? ''));
   });
 
   let lastError = null;
@@ -100,11 +100,11 @@ export async function triggerWorkflow(webhookInput, formData) {
       : candidate.url;
 
     try {
-      console.log(`[n8nService] Sending ${candidate.isFormData ? 'multipart/form-data' : 'JSON'} to ${targetUrl}`);
+      console.log(`[n8nService] Sending ${candidate.isFormData ? 'application/x-www-form-urlencoded' : 'JSON'} to ${targetUrl}`);
       
-      const payload = candidate.isFormData ? body : formData;
+      const payload = candidate.isFormData ? urlEncodedBody : formData;
       const headers = candidate.isFormData
-        ? undefined
+        ? { 'Content-Type': 'application/x-www-form-urlencoded' }
         : { 'Content-Type': 'application/json' };
 
       const res = await axios.post(targetUrl, payload, {
