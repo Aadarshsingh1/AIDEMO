@@ -16,9 +16,9 @@ function parseWebhookInput(input) {
   const str = input.trim();
   let id = str;
   let baseUrl = getBaseUrl();
+  const isFullUrl = str.startsWith('http://') || str.startsWith('https://');
 
-  // If user pasted a full URL
-  if (str.startsWith('http://') || str.startsWith('https://')) {
+  if (isFullUrl) {
     try {
       const parsedUrl = new URL(str);
       baseUrl = parsedUrl.origin;
@@ -36,35 +36,32 @@ function parseWebhookInput(input) {
   const proxyBase = '/n8n-proxy';
   const rawCandidates = [];
 
-  // Proxy candidates first (bypasses browser CORS policy on Vercel and local dev)
-  if (str.startsWith('http://') || str.startsWith('https://')) {
+  if (isFullUrl) {
+    // Exact URL specified: ONLY call this exact endpoint (proxied + direct fallback)
     try {
       const parsed = new URL(str);
+      const isFormData = parsed.pathname.includes('/form');
       const proxiedUrl = `${proxyBase}${parsed.pathname}`;
-      rawCandidates.push({ url: proxiedUrl, isFormData: str.includes('/form') });
+      rawCandidates.push(
+        { url: proxiedUrl, isFormData },
+        { url: str, isFormData }
+      );
     } catch {
-      /* ignore */
+      rawCandidates.push({ url: str, isFormData: str.includes('/form') });
     }
+  } else {
+    // Plain UUID ID: try candidate variants
+    rawCandidates.push(
+      { url: `${proxyBase}/form/${id}`, isFormData: true },
+      { url: `${proxyBase}/form-test/${id}`, isFormData: true },
+      { url: `${proxyBase}/webhook/${id}`, isFormData: false },
+      { url: `${proxyBase}/webhook-test/${id}`, isFormData: false },
+      { url: `${base}/form/${id}`, isFormData: true },
+      { url: `${base}/form-test/${id}`, isFormData: true },
+      { url: `${base}/webhook/${id}`, isFormData: false },
+      { url: `${base}/webhook-test/${id}`, isFormData: false }
+    );
   }
-
-  rawCandidates.push(
-    { url: `${proxyBase}/form/${id}`, isFormData: true },
-    { url: `${proxyBase}/form-test/${id}`, isFormData: true },
-    { url: `${proxyBase}/webhook/${id}`, isFormData: false },
-    { url: `${proxyBase}/webhook-test/${id}`, isFormData: false }
-  );
-
-  // Direct URL candidates fallback
-  if (str.startsWith('http://') || str.startsWith('https://')) {
-    rawCandidates.push({ url: str, isFormData: str.includes('/form') });
-  }
-
-  rawCandidates.push(
-    { url: `${base}/form/${id}`, isFormData: true },
-    { url: `${base}/form-test/${id}`, isFormData: true },
-    { url: `${base}/webhook/${id}`, isFormData: false },
-    { url: `${base}/webhook-test/${id}`, isFormData: false }
-  );
 
   const seen = new Set();
   const candidates = rawCandidates.filter(c => {
