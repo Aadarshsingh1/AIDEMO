@@ -39,8 +39,8 @@ async function callRagWebhook(webhookId, payload, isFile = false) {
 
   let lastErr = null;
   for (const rawUrl of rawEndpoints) {
-    // Route through Vite proxy in DEV mode to bypass browser CORS rules
-    const targetUrl = import.meta.env.DEV && base
+    // Route through /n8n-proxy (Vite proxy in DEV, Vercel rewrite in PROD) to bypass CORS
+    const targetUrl = base && rawUrl.startsWith(base)
       ? rawUrl.replace(base, '/n8n-proxy')
       : rawUrl;
 
