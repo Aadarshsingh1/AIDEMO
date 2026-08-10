@@ -2,7 +2,7 @@
   "rewrites": [
     {
       "source": "/n8n-proxy/:path*",
-      "destination": "https://amansinghhhhh.app.n8n.cloud/:path*"
+      "destination": "https://aadarshh.app.n8n.cloud/:path*"
     },
     {
       "source": "/(.*)",
