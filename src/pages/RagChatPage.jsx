@@ -28,18 +28,27 @@ async function callRagWebhook(webhookId, payload, isFile = false) {
     cleanId = cleanId.replace(/.*?\/(form|form-test|webhook|webhook-test)\//, '').replace(/\/chat$/, '').replace(/\/$/, '');
   }
 
-  const rawEndpoints = [
-    `${base}/webhook/${cleanId}/chat`,
-    `${base}/webhook-test/${cleanId}/chat`,
-    `${base}/form/${cleanId}`,
-    `${base}/form-test/${cleanId}`,
-    `${base}/webhook/${cleanId}`,
-    `${base}/webhook-test/${cleanId}`,
-  ];
+  // File uploads → Form Trigger uses /form/ path, try FIRST
+  // Chat queries → Webhook Trigger uses /webhook/chat path, try FIRST
+  const rawEndpoints = isFile
+    ? [
+        `${base}/form/${cleanId}`,
+        `${base}/form-test/${cleanId}`,
+        `${base}/webhook/${cleanId}`,
+        `${base}/webhook-test/${cleanId}`,
+      ]
+    : [
+        `${base}/webhook/${cleanId}/chat`,
+        `${base}/webhook-test/${cleanId}/chat`,
+        `${base}/webhook/${cleanId}`,
+        `${base}/webhook-test/${cleanId}`,
+        `${base}/form/${cleanId}`,
+        `${base}/form-test/${cleanId}`,
+      ];
 
   let lastErr = null;
   for (const rawUrl of rawEndpoints) {
-    // Route through /n8n-proxy (Vite proxy in DEV, Vercel rewrite in PROD) to bypass CORS
+    // Always route through /n8n-proxy (Vite proxy in DEV, Vercel rewrite in PROD)
     const targetUrl = base && rawUrl.startsWith(base)
       ? rawUrl.replace(base, '/n8n-proxy')
       : rawUrl;
@@ -47,37 +56,20 @@ async function callRagWebhook(webhookId, payload, isFile = false) {
     try {
       const res = await axios.post(targetUrl, payload, {
         headers: isFile ? undefined : { 'Content-Type': 'application/json' },
-        timeout: 300_000, // 5 minute timeout for OCR & vector embedding
+        timeout: 300_000,
       });
       return { success: true, data: res.data };
     } catch (e) {
       lastErr = e;
-      // If n8n responded with 500 (Internal Server Error), the endpoint exists & was called,
-      // but an internal node failed inside n8n (e.g. Mistral API key, Gemini Embeddings, Pinecone index).
       if (e.response?.status === 500) {
         const detail = e.response?.data?.message || 'A node inside your n8n workflow threw an error.';
-        return {
-          success: false,
-          error: `n8n Workflow Execution Error (HTTP 500): ${detail}. Open your n8n Executions tab to see which node failed (e.g. Mistral Cloud / Gemini / Pinecone credentials).`
-        };
-      }
-      // If proxy returns 413 (Payload Too Large due to Vercel 4.5MB body cap), retry directly
-      if (e.response?.status === 413 && targetUrl !== rawUrl) {
-        try {
-          const directRes = await axios.post(rawUrl, payload, {
-            headers: isFile ? undefined : { 'Content-Type': 'application/json' },
-            timeout: 300_000,
-          });
-          return { success: true, data: directRes.data };
-        } catch (directErr) {
-          lastErr = directErr;
-        }
+        return { success: false, error: `n8n Error (500): ${detail} — Check n8n Executions tab.` };
       }
     }
   }
   let msg = lastErr?.response?.data?.message || lastErr?.message || 'Network Error';
   if (lastErr?.response?.status === 404) {
-    msg = '404 Not Found — Webhook ID is not active or incorrect in Settings. Please activate your workflow in n8n (toggle Published ON) and verify the Webhook/Form ID in Settings.';
+    msg = '❌ Webhook not found (404). Check your webhook ID in Settings and make sure the workflow is Published in n8n.';
   }
   return { success: false, error: msg };
 }
@@ -250,10 +242,7 @@ export default function RagChatPage({ onBack }) {
     if (!file) return;
     setPendingFile(null);
 
-    let uploadId = getConfig(CONFIG_KEYS.WEBHOOK_RAG_UPLOAD);
-    if (uploadId && uploadId.includes('1bf39e48-86df-44a8')) {
-      uploadId = '1bf39e40-86df-44a0-b9fb-f85b383ba3fd';
-    }
+    const uploadId = getConfig(CONFIG_KEYS.WEBHOOK_RAG_UPLOAD);
 
     // Show user message with attachment badge
     const userMsgId = Date.now();

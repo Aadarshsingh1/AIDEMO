@@ -8,7 +8,7 @@ export default defineConfig({
     host: true,
     proxy: {
       '/n8n-proxy': {
-        target: 'https://amansinghhhh.app.n8n.cloud',
+        target: 'https://aadarshh.app.n8n.cloud',
         changeOrigin: true,
         secure: true,
         rewrite: (path) => path.replace(/^\/n8n-proxy/, ''),

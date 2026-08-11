@@ -19,49 +19,49 @@ const STORAGE_KEY = 'treos_config';
 
 /** Keys that the Settings UI can manage */
 export const CONFIG_KEYS = {
-  N8N_BASE_URL:            'n8nBaseUrl',
-  WEBHOOK_GOOGLE_MAPS:     'webhookGoogleMaps',
-  WEBHOOK_CORDISO_LEADS:   'webhookCordisoLeads',
-  MAPS_SHEET_EDIT_URL:     'mapsSheetEditUrl',
-  CORDISO_SHEET_EDIT_URL:  'cordisoSheetEditUrl',
-  MAPS_SHEET_CSV_URL:      'mapsSheetCsvUrl',
-  CORDISO_SHEET_CSV_URL:   'cordisoSheetCsvUrl',
+  N8N_BASE_URL: 'n8nBaseUrl',
+  WEBHOOK_GOOGLE_MAPS: 'webhookGoogleMaps',
+  WEBHOOK_CORDISO_LEADS: 'webhookCordisoLeads',
+  MAPS_SHEET_EDIT_URL: 'mapsSheetEditUrl',
+  CORDISO_SHEET_EDIT_URL: 'cordisoSheetEditUrl',
+  MAPS_SHEET_CSV_URL: 'mapsSheetCsvUrl',
+  CORDISO_SHEET_CSV_URL: 'cordisoSheetCsvUrl',
   // RAG Knowledge Base workflows
-  WEBHOOK_RAG_UPLOAD:      'webhookRagUpload',
-  WEBHOOK_RAG_CHAT:        'webhookRagChat',
+  WEBHOOK_RAG_UPLOAD: 'webhookRagUpload',
+  WEBHOOK_RAG_CHAT: 'webhookRagChat',
   // No Action Plan Leads workflow
-  WEBHOOK_NO_ACTION_PLAN:          'webhookNoActionPlan',
-  NO_ACTION_ALL_LEADS_SHEET_URL:   'noActionAllLeadsSheetUrl',
-  NO_ACTION_ALL_LEADS_CSV_URL:     'noActionAllLeadsCsvUrl',
-  NO_ACTION_AI_LEADS_CSV_URL:      'noActionAiLeadsCsvUrl',
+  WEBHOOK_NO_ACTION_PLAN: 'webhookNoActionPlan',
+  NO_ACTION_ALL_LEADS_SHEET_URL: 'noActionAllLeadsSheetUrl',
+  NO_ACTION_ALL_LEADS_CSV_URL: 'noActionAllLeadsCsvUrl',
+  NO_ACTION_AI_LEADS_CSV_URL: 'noActionAiLeadsCsvUrl',
   // Lead Qualification workflow
-  WEBHOOK_LEAD_QUALIFICATION:          'webhookLeadQualification',
-  QUALIFICATION_ALL_LEADS_SHEET_URL:   'qualificationAllLeadsSheetUrl',
-  QUALIFICATION_ALL_LEADS_CSV_URL:     'qualificationAllLeadsCsvUrl',
-  QUALIFICATION_AI_LEADS_CSV_URL:      'qualificationAiLeadsCsvUrl',
+  WEBHOOK_LEAD_QUALIFICATION: 'webhookLeadQualification',
+  QUALIFICATION_ALL_LEADS_SHEET_URL: 'qualificationAllLeadsSheetUrl',
+  QUALIFICATION_ALL_LEADS_CSV_URL: 'qualificationAllLeadsCsvUrl',
+  QUALIFICATION_AI_LEADS_CSV_URL: 'qualificationAiLeadsCsvUrl',
 };
 
 /** .env fallback values (baked in at build time by Vite) */
 const ENV_DEFAULTS = {
-  [CONFIG_KEYS.N8N_BASE_URL]:           import.meta.env.VITE_N8N_BASE_URL            || '',
-  [CONFIG_KEYS.WEBHOOK_GOOGLE_MAPS]:    import.meta.env.VITE_WEBHOOK_GOOGLE_MAPS     || '',
-  [CONFIG_KEYS.WEBHOOK_CORDISO_LEADS]:  import.meta.env.VITE_WEBHOOK_CORDISO_LEADS   || '',
-  [CONFIG_KEYS.MAPS_SHEET_EDIT_URL]:    import.meta.env.VITE_MAPS_SHEET_EDIT_URL     || '',
-  [CONFIG_KEYS.CORDISO_SHEET_EDIT_URL]: import.meta.env.VITE_CORDISO_SHEET_EDIT_URL  || '',
-  [CONFIG_KEYS.MAPS_SHEET_CSV_URL]:     import.meta.env.VITE_MAPS_SHEET_CSV_URL      || '',
-  [CONFIG_KEYS.CORDISO_SHEET_CSV_URL]:  import.meta.env.VITE_CORDISO_SHEET_CSV_URL   || '',
-  [CONFIG_KEYS.WEBHOOK_RAG_UPLOAD]:     import.meta.env.VITE_WEBHOOK_RAG_UPLOAD      || '1bf39e40-86df-44a0-b9fb-f85b383ba3fd',
-  [CONFIG_KEYS.WEBHOOK_RAG_CHAT]:       import.meta.env.VITE_WEBHOOK_RAG_CHAT        || '911eeda3-33e7-42b7-8054-4cffc04f36a4',
+  [CONFIG_KEYS.N8N_BASE_URL]: import.meta.env.VITE_N8N_BASE_URL || '',
+  [CONFIG_KEYS.WEBHOOK_GOOGLE_MAPS]: import.meta.env.VITE_WEBHOOK_GOOGLE_MAPS || '',
+  [CONFIG_KEYS.WEBHOOK_CORDISO_LEADS]: import.meta.env.VITE_WEBHOOK_CORDISO_LEADS || '',
+  [CONFIG_KEYS.MAPS_SHEET_EDIT_URL]: import.meta.env.VITE_MAPS_SHEET_EDIT_URL || '',
+  [CONFIG_KEYS.CORDISO_SHEET_EDIT_URL]: import.meta.env.VITE_CORDISO_SHEET_EDIT_URL || '',
+  [CONFIG_KEYS.MAPS_SHEET_CSV_URL]: import.meta.env.VITE_MAPS_SHEET_CSV_URL || '',
+  [CONFIG_KEYS.CORDISO_SHEET_CSV_URL]: import.meta.env.VITE_CORDISO_SHEET_CSV_URL || '',
+  [CONFIG_KEYS.WEBHOOK_RAG_UPLOAD]: import.meta.env.VITE_WEBHOOK_RAG_UPLOAD || 'b7430c49-07df-4ea8-971c-4340d99bc456',
+  [CONFIG_KEYS.WEBHOOK_RAG_CHAT]: import.meta.env.VITE_WEBHOOK_RAG_CHAT || '911eeda3-33e7-42b7-8054-4cffc04f36a4',
   // No Action Plan
-  [CONFIG_KEYS.WEBHOOK_NO_ACTION_PLAN]:        import.meta.env.VITE_WEBHOOK_NO_ACTION_PLAN         || '71a1b559-084e-46a1-94cb-6f158d17d2cc',
-  [CONFIG_KEYS.NO_ACTION_ALL_LEADS_SHEET_URL]: import.meta.env.VITE_NO_ACTION_ALL_LEADS_SHEET_URL  || 'https://docs.google.com/spreadsheets/d/1zO7j2VMY0uwnNCEl__Ugf3xdg26locz2qgc9pmCrEPM/edit?gid=1959112082#gid=1959112082',
-  [CONFIG_KEYS.NO_ACTION_ALL_LEADS_CSV_URL]:   import.meta.env.VITE_NO_ACTION_ALL_LEADS_CSV_URL    || 'https://docs.google.com/spreadsheets/d/e/2PACX-1vT8QuJUoBvfGTzDnG-tylVs0403vtFKv_9APjTwWpAzzqTszjuyJ4JbR71Zg5KiwcRKCxcdk1m1haOZ/pub?gid=1959112082&single=true&output=csv',
-  [CONFIG_KEYS.NO_ACTION_AI_LEADS_CSV_URL]:    import.meta.env.VITE_NO_ACTION_AI_LEADS_CSV_URL     || 'https://docs.google.com/spreadsheets/d/1RyMWMXGsJzJFfhWndADyRqCvtcarf4NdODfOtKroDjA/export?format=csv&gid=0',
+  [CONFIG_KEYS.WEBHOOK_NO_ACTION_PLAN]: import.meta.env.VITE_WEBHOOK_NO_ACTION_PLAN || '71a1b559-084e-46a1-94cb-6f158d17d2cc',
+  [CONFIG_KEYS.NO_ACTION_ALL_LEADS_SHEET_URL]: import.meta.env.VITE_NO_ACTION_ALL_LEADS_SHEET_URL || 'https://docs.google.com/spreadsheets/d/1zO7j2VMY0uwnNCEl__Ugf3xdg26locz2qgc9pmCrEPM/edit?gid=1959112082#gid=1959112082',
+  [CONFIG_KEYS.NO_ACTION_ALL_LEADS_CSV_URL]: import.meta.env.VITE_NO_ACTION_ALL_LEADS_CSV_URL || 'https://docs.google.com/spreadsheets/d/e/2PACX-1vT8QuJUoBvfGTzDnG-tylVs0403vtFKv_9APjTwWpAzzqTszjuyJ4JbR71Zg5KiwcRKCxcdk1m1haOZ/pub?gid=1959112082&single=true&output=csv',
+  [CONFIG_KEYS.NO_ACTION_AI_LEADS_CSV_URL]: import.meta.env.VITE_NO_ACTION_AI_LEADS_CSV_URL || 'https://docs.google.com/spreadsheets/d/1RyMWMXGsJzJFfhWndADyRqCvtcarf4NdODfOtKroDjA/export?format=csv&gid=0',
   // Lead Qualification
-  [CONFIG_KEYS.WEBHOOK_LEAD_QUALIFICATION]:        import.meta.env.VITE_WEBHOOK_LEAD_QUALIFICATION        || '37994882-3837-4254-b347-58d217c8db25',
+  [CONFIG_KEYS.WEBHOOK_LEAD_QUALIFICATION]: import.meta.env.VITE_WEBHOOK_LEAD_QUALIFICATION || '37994882-3837-4254-b347-58d217c8db25',
   [CONFIG_KEYS.QUALIFICATION_ALL_LEADS_SHEET_URL]: import.meta.env.VITE_QUALIFICATION_ALL_LEADS_SHEET_URL || 'https://docs.google.com/spreadsheets/d/1Mxh_uGDv9WY_XiA8gnQbsN1c5nkVEsIMn6PLsCVmIgs/edit?gid=0#gid=0',
-  [CONFIG_KEYS.QUALIFICATION_ALL_LEADS_CSV_URL]:   import.meta.env.VITE_QUALIFICATION_ALL_LEADS_CSV_URL   || 'https://docs.google.com/spreadsheets/d/e/2PACX-1vRd6yDTCzHi5WM9ZzI0IqmRzXBM1HkDAu72JaUrQwCuEITBf3nSp-3QVqIa988GcHvLJrmla4Tuw0L8/pub?gid=0&single=true&output=csv',
-  [CONFIG_KEYS.QUALIFICATION_AI_LEADS_CSV_URL]:    import.meta.env.VITE_QUALIFICATION_AI_LEADS_CSV_URL    || 'https://docs.google.com/spreadsheets/d/10pldJMQRNIbJMSqS0aNBFsSYWlvok6EiGDtph6-jseU/export?format=csv&gid=0',
+  [CONFIG_KEYS.QUALIFICATION_ALL_LEADS_CSV_URL]: import.meta.env.VITE_QUALIFICATION_ALL_LEADS_CSV_URL || 'https://docs.google.com/spreadsheets/d/e/2PACX-1vRd6yDTCzHi5WM9ZzI0IqmRzXBM1HkDAu72JaUrQwCuEITBf3nSp-3QVqIa988GcHvLJrmla4Tuw0L8/pub?gid=0&single=true&output=csv',
+  [CONFIG_KEYS.QUALIFICATION_AI_LEADS_CSV_URL]: import.meta.env.VITE_QUALIFICATION_AI_LEADS_CSV_URL || 'https://docs.google.com/spreadsheets/d/10pldJMQRNIbJMSqS0aNBFsSYWlvok6EiGDtph6-jseU/export?format=csv&gid=0',
 };
 
 // ─── Internal helpers ─────────────────────────────────────────────────────────
@@ -72,11 +72,27 @@ function loadStored() {
     const raw = localStorage.getItem(STORAGE_KEY);
     if (!raw) return {};
     const parsed = JSON.parse(raw);
-    // Auto-correct stale typos in saved localStorage overrides
-    if (parsed.webhookRagUpload && parsed.webhookRagUpload.includes('1bf39e48-86df-44a8')) {
-      parsed.webhookRagUpload = '1bf39e40-86df-44a0-b9fb-f85b383ba3fd';
-      saveStored(parsed);
+
+    let changed = false;
+
+    // Auto-correct stale wrong n8n base URL (amansinghhhh → aadarshh)
+    if (parsed.n8nBaseUrl && parsed.n8nBaseUrl.includes('amansinghhhh.app.n8n.cloud')) {
+      parsed.n8nBaseUrl = 'https://aadarshh.app.n8n.cloud';
+      changed = true;
     }
+
+    // Auto-correct BOTH wrong RAG upload webhook ID variants → correct ID
+    if (
+      parsed.webhookRagUpload &&
+      (parsed.webhookRagUpload.includes('b7430c49') ||
+       parsed.webhookRagUpload.includes('b7438c49') ||
+       parsed.webhookRagUpload.includes('1bf39e48'))
+    ) {
+      parsed.webhookRagUpload = '1bf39e40-86df-44a0-b9fb-f85b383ba3fd';
+      changed = true;
+    }
+
+    if (changed) saveStored(parsed);
     return parsed;
   } catch {
     return {};
