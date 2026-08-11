@@ -146,8 +146,21 @@ export async function triggerWorkflow(webhookInput, formData, fieldsSchema = [])
       console.log(`[n8nService] Workflow trigger success!`, res.data);
       return { success: true, data: res.data };
     } catch (err) {
-      console.warn(`[n8nService] Endpoint ${targetUrl} error:`, err.response?.status, err.response?.data || err.message);
+      const status = err.response?.status;
+      console.warn(`[n8nService] Endpoint ${targetUrl} error:`, status, err.response?.data || err.message);
       lastError = err;
+
+      // 500 = n8n received & started the workflow but a node failed inside.
+      // Stop trying other endpoints — the webhook IS registered, the workflow just has an internal error.
+      if (status === 500) {
+        const detail = err.response?.data?.message
+          || (typeof err.response?.data === 'string' ? null : null)
+          || 'A node inside your n8n workflow threw an error.';
+        return {
+          success: false,
+          error: `n8n Workflow Error (500): ${detail} — Open n8n Executions tab to see which node failed.`,
+        };
+      }
     }
   }
 
