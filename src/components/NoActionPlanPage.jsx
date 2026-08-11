@@ -43,19 +43,19 @@ function getStepStateHelper(idx, completedStepIdx, isDone) {
 
 // ─── NoActionPlanPage ─────────────────────────────────────────────────────────
 export default function NoActionPlanPage({ workflow, n8nConfigured, onBack }) {
-  const [activeTab, setActiveTab]       = useState('run');
+  const [activeTab, setActiveTab] = useState('run');
   const [selectedFile, setSelectedFile] = useState(null);
-  const [status, setStatus]             = useState('idle');
-  const [errorMsg, setErrorMsg]         = useState('');
+  const [status, setStatus] = useState('idle');
+  const [errorMsg, setErrorMsg] = useState('');
   const [leadsRefreshKey, setLeadsRefreshKey] = useState(0);
   const fileInputRef = useRef(null);
 
   const isRunning = status === 'running';
-  const isDone    = status === 'done';
-  const isError   = status === 'error';
+  const isDone = status === 'done';
+  const isError = status === 'error';
 
   const allLeadsCsvUrl = workflow.sheetCsvUrl || formatGoogleSheetCsvUrl(workflow.sheetUrl) || '';
-  const aiLeadsCsvUrl  = workflow.aiSheetCsvUrl  || '';
+  const aiLeadsCsvUrl = workflow.aiSheetCsvUrl || '';
 
   const completedStepIdx = useSimulatedSteps(
     workflow.steps,
@@ -63,8 +63,8 @@ export default function NoActionPlanPage({ workflow, n8nConfigured, onBack }) {
     () => { setStatus('done'); setLeadsRefreshKey(k => k + 1); }
   );
 
-  const totalSteps  = workflow.steps.length;
-  const doneSteps   = isDone ? totalSteps : Math.max(0, completedStepIdx + 1);
+  const totalSteps = workflow.steps.length;
+  const doneSteps = isDone ? totalSteps : Math.max(0, completedStepIdx + 1);
   const progressPct = totalSteps > 0 ? Math.round((doneSteps / totalSteps) * 100) : 0;
 
   function handleFileChange(e) {
@@ -91,9 +91,9 @@ export default function NoActionPlanPage({ workflow, n8nConfigured, onBack }) {
   }
 
   const TABS = [
-    { id: 'run',    label: 'Run Workflow',  icon: <Play size={13} /> },
-    { id: 'leads',  label: 'All Leads',     icon: <Database size={13} /> },
-    { id: 'atrisk', label: 'At-Risk Leads', icon: <TrendingDown size={13} />, badge: 'AI' },
+    { id: 'run', label: 'Run Workflow', icon: <Play size={13} /> },
+    { id: 'leads', label: 'All Leads', icon: <Database size={13} /> },
+    { id: 'atrisk', label: 'AI Opportunity At Risk', icon: <TrendingDown size={13} />, badge: 'AI' },
   ];
 
   const iconColor = '#ef4444';
@@ -233,8 +233,8 @@ export default function NoActionPlanPage({ workflow, n8nConfigured, onBack }) {
 
                 <button type="submit" className="btn btn-primary btn-full" disabled={isRunning || isDone} style={{ marginTop: 4 }}>
                   {isRunning ? <><span className="spinner" /> Analysing Leads…</>
-                   : isDone  ? <><CheckCircle2 size={15} /> Done — Report Sent!</>
-                             : <><Play size={14} /> Execute Workflow</>}
+                    : isDone ? <><CheckCircle2 size={15} /> Done — Report Sent!</>
+                      : <><Play size={14} /> Execute Workflow</>}
                 </button>
 
                 {isDone && (
@@ -293,9 +293,9 @@ export default function NoActionPlanPage({ workflow, n8nConfigured, onBack }) {
                           transition: 'all 0.3s ease',
                         }}>
                           <div className={`step-dot ${state}`}>
-                            {state === 'done'    ? <CheckCircle2 size={12} /> :
-                             state === 'running' ? <Loader2 size={12} style={{ animation: 'spin 1s linear infinite' }} /> :
-                             idx + 1}
+                            {state === 'done' ? <CheckCircle2 size={12} /> :
+                              state === 'running' ? <Loader2 size={12} style={{ animation: 'spin 1s linear infinite' }} /> :
+                                idx + 1}
                           </div>
                           <div className="step-content">
                             <div className="step-name">{step.label}</div>
@@ -366,7 +366,7 @@ export default function NoActionPlanPage({ workflow, n8nConfigured, onBack }) {
                 workflow={{
                   ...workflow,
                   name: 'At-Risk Leads',
-                  sheetColumns: ['LeadID', 'CustomerName', 'LeadStatus', 'PreferredProject', 'TotalInteractions', 'DaysSinceLastInteraction', 'AI Opportunity At Risk'],
+                  sheetColumns: ['LeadID', 'CustomerName', 'LeadStatus', 'PreferredProject', 'TotalInteractions', 'DaysSinceLastInteraction', 'ReasonForPriority'],
                 }}
                 csvUrl={aiLeadsCsvUrl}
                 refreshTrigger={leadsRefreshKey}

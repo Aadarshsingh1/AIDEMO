@@ -163,7 +163,7 @@ export function getWorkflows() {
 
       fields: [],
 
-      sheetColumns:  ['LeadID', 'CustomerName', 'LeadStatus', 'PreferredProject', 'TotalInteractions', 'DaysSinceLastInteraction', 'AI Opportunity At Risk'],
+      sheetColumns: ['LeadID', 'CustomerName', 'LeadStatus', 'PreferredProject', 'TotalInteractions', 'DaysSinceLastInteraction', 'ReasonForPriority'],
       sheetUrl: getConfig(CONFIG_KEYS.NO_ACTION_ALL_LEADS_SHEET_URL),
       sheetCsvUrl: getConfig(CONFIG_KEYS.NO_ACTION_ALL_LEADS_CSV_URL),
       aiSheetCsvUrl: getConfig(CONFIG_KEYS.NO_ACTION_AI_LEADS_CSV_URL),
