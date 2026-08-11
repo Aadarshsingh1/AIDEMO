@@ -50,7 +50,7 @@ const ENV_DEFAULTS = {
   [CONFIG_KEYS.CORDISO_SHEET_EDIT_URL]: import.meta.env.VITE_CORDISO_SHEET_EDIT_URL  || '',
   [CONFIG_KEYS.MAPS_SHEET_CSV_URL]:     import.meta.env.VITE_MAPS_SHEET_CSV_URL      || '',
   [CONFIG_KEYS.CORDISO_SHEET_CSV_URL]:  import.meta.env.VITE_CORDISO_SHEET_CSV_URL   || '',
-  [CONFIG_KEYS.WEBHOOK_RAG_UPLOAD]:     import.meta.env.VITE_WEBHOOK_RAG_UPLOAD      || 'b7430c49-07df-4ea8-971c-4340d99bc456',
+  [CONFIG_KEYS.WEBHOOK_RAG_UPLOAD]:     import.meta.env.VITE_WEBHOOK_RAG_UPLOAD      || '1bf39e40-86df-44a0-b9fb-f85b383ba3fd',
   [CONFIG_KEYS.WEBHOOK_RAG_CHAT]:       import.meta.env.VITE_WEBHOOK_RAG_CHAT        || '911eeda3-33e7-42b7-8054-4cffc04f36a4',
   // No Action Plan
   [CONFIG_KEYS.WEBHOOK_NO_ACTION_PLAN]:        import.meta.env.VITE_WEBHOOK_NO_ACTION_PLAN         || '71a1b559-084e-46a1-94cb-6f158d17d2cc',
