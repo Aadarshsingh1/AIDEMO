@@ -52,6 +52,18 @@ async function callRagWebhook(webhookId, payload, isFile = false) {
       return { success: true, data: res.data };
     } catch (e) {
       lastErr = e;
+      // If proxy returns 413 (Payload Too Large due to Vercel 4.5MB body cap), retry directly
+      if (e.response?.status === 413 && targetUrl !== rawUrl) {
+        try {
+          const directRes = await axios.post(rawUrl, payload, {
+            headers: isFile ? undefined : { 'Content-Type': 'application/json' },
+            timeout: 300_000,
+          });
+          return { success: true, data: directRes.data };
+        } catch (directErr) {
+          lastErr = directErr;
+        }
+      }
     }
   }
   const msg = lastErr?.response?.data?.message || lastErr?.message || 'Network Error';
@@ -250,13 +262,7 @@ export default function RagChatPage({ onBack }) {
     }
 
     const formData = new FormData();
-    formData.append('PDF', file);             // Matches user's n8n Form field name "PDF"
-    formData.append('Select_Document', file); // Fallback for older triggers
-    formData.append('file', file);
-    formData.append('document', file);
-    formData.append('data', file);
-    formData.append('field-0', file);
-    formData.append('field_0', file);
+    formData.append('PDF', file);             // Primary field name matching n8n Form trigger "PDF"
     const result = await callRagWebhook(uploadId, formData, true);
 
     setIsUploading(false);
