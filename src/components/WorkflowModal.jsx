@@ -75,8 +75,25 @@ export default function WorkflowModal({ workflow, onClose, onDone, n8nConfigured
     }
   }, [completedStepIdx]);
 
+  // Pre-fill default field values (e.g. Location: 'India')
+  useEffect(() => {
+    if (workflow?.fields) {
+      const defaults = {};
+      workflow.fields.forEach(f => {
+        if (f.defaultValue !== undefined) defaults[f.key] = String(f.defaultValue);
+      });
+      setFormValues(prev => ({ ...defaults, ...prev }));
+    }
+  }, [workflow]);
+
   function handleChange(key, value) {
-    setFormValues(prev => ({ ...prev, [key]: value }));
+    setFormValues(prev => {
+      const next = { ...prev, [key]: value };
+      if (key === 'Product Category' && (value === 'Flat in Pune' || value === 'Flat in Mumbai')) {
+        next['Location'] = 'India';
+      }
+      return next;
+    });
   }
 
   async function handleSubmit(e) {
@@ -99,7 +116,7 @@ export default function WorkflowModal({ workflow, onClose, onDone, n8nConfigured
     }
 
     // Real call
-    const result = await triggerWorkflow(workflow.webhookId, formValues);
+    const result = await triggerWorkflow(workflow.webhookId, formValues, workflow.fields);
     if (!result.success) {
       setStatus('error');
       setErrorMsg(result.error);

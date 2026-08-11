@@ -16,7 +16,7 @@ function loadDocs() {
   catch { return []; }
 }
 function saveDocs(docs) {
-  try { localStorage.setItem(DOCS_STORAGE_KEY, JSON.stringify(docs)); } catch {}
+  try { localStorage.setItem(DOCS_STORAGE_KEY, JSON.stringify(docs)); } catch { }
 }
 
 async function callRagWebhook(webhookId, payload, isFile = false) {
@@ -39,8 +39,8 @@ async function callRagWebhook(webhookId, payload, isFile = false) {
 
   let lastErr = null;
   for (const rawUrl of rawEndpoints) {
-    // Route through /n8n-proxy (Vite proxy in DEV, Vercel rewrite in PROD) to bypass CORS
-    const targetUrl = base && rawUrl.startsWith(base)
+    // Route through Vite proxy in DEV mode to bypass browser CORS rules
+    const targetUrl = import.meta.env.DEV && base
       ? rawUrl.replace(base, '/n8n-proxy')
       : rawUrl;
 
@@ -169,8 +169,8 @@ function DocumentItem({ doc, onDelete }) {
       background: '#f8fafc', border: '1px solid #e2e8f0',
       marginBottom: 8, transition: 'all 0.15s',
     }}
-    onMouseEnter={e => e.currentTarget.style.borderColor = '#a5b4fc'}
-    onMouseLeave={e => e.currentTarget.style.borderColor = '#e2e8f0'}
+      onMouseEnter={e => e.currentTarget.style.borderColor = '#a5b4fc'}
+      onMouseLeave={e => e.currentTarget.style.borderColor = '#e2e8f0'}
     >
       <FileText size={15} color="#6366f1" style={{ flexShrink: 0 }} />
       <div style={{ flex: 1, minWidth: 0 }}>
@@ -181,8 +181,8 @@ function DocumentItem({ doc, onDelete }) {
           {doc.status === 'indexing'
             ? <span style={{ color: '#f59e0b' }}>⏳ Indexing...</span>
             : doc.status === 'error'
-            ? <span style={{ color: '#dc2626' }}>❌ Upload Failed</span>
-            : <span style={{ color: '#16a34a' }}>✅ Indexed & Ready</span>}
+              ? <span style={{ color: '#dc2626' }}>❌ Upload Failed</span>
+              : <span style={{ color: '#16a34a' }}>✅ Indexed & Ready</span>}
         </div>
       </div>
       <button
@@ -200,18 +200,18 @@ function DocumentItem({ doc, onDelete }) {
 
 // ─── Main RagChatPage ─────────────────────────────────────────────────────────
 export default function RagChatPage({ onBack }) {
-  const [messages, setMessages]     = useState([
+  const [messages, setMessages] = useState([
     { id: 1, sender: 'ai', text: "Hello! 👋 I'm your AI Knowledge Assistant. Upload documents using the 📎 button below or start asking questions about your knowledge base." }
   ]);
-  const [docs, setDocs]             = useState(loadDocs);
-  const [input, setInput]           = useState('');
+  const [docs, setDocs] = useState(loadDocs);
+  const [input, setInput] = useState('');
   const [pendingFile, setPendingFile] = useState(null); // file chosen but not yet uploaded
   const [isUploading, setIsUploading] = useState(false);
-  const [isThinking, setIsThinking]   = useState(false);
+  const [isThinking, setIsThinking] = useState(false);
 
-  const chatEndRef   = useRef(null);
+  const chatEndRef = useRef(null);
   const fileInputRef = useRef(null);
-  const textareaRef  = useRef(null);
+  const textareaRef = useRef(null);
 
   // Auto-scroll chat to bottom on new messages
   useEffect(() => {
@@ -277,7 +277,7 @@ export default function RagChatPage({ onBack }) {
     if (!question || isThinking) return;
     setInput('');
 
-    const userId  = `user_${Date.now()}_${Math.random()}`;
+    const userId = `user_${Date.now()}_${Math.random()}`;
     const thinkId = `ai_${Date.now()}_${Math.random()}`;
 
     setMessages(prev => [
@@ -309,18 +309,18 @@ export default function RagChatPage({ onBack }) {
     setIsThinking(false);
     setMessages(prev => prev.map(m => m.id === thinkId
       ? {
-          ...m, typing: false,
-          text: result.success
-            ? (
-                result.data?.output ||
-                result.data?.text ||
-                result.data?.message ||
-                (Array.isArray(result.data) && result.data[0]?.json?.output) ||
-                (Array.isArray(result.data) && result.data[0]?.json?.text) ||
-                (typeof result.data === 'string' ? result.data : JSON.stringify(result.data))
-              )
-            : `Error: ${result.error}`,
-        }
+        ...m, typing: false,
+        text: result.success
+          ? (
+            result.data?.output ||
+            result.data?.text ||
+            result.data?.message ||
+            (Array.isArray(result.data) && result.data[0]?.json?.output) ||
+            (Array.isArray(result.data) && result.data[0]?.json?.text) ||
+            (typeof result.data === 'string' ? result.data : JSON.stringify(result.data))
+          )
+          : `Error: ${result.error}`,
+      }
       : m
     ));
   }
@@ -490,8 +490,8 @@ export default function RagChatPage({ onBack }) {
             borderRadius: 16, padding: '8px 12px',
             transition: 'border-color 0.2s',
           }}
-          onFocusCapture={e => e.currentTarget.style.borderColor = '#6366f1'}
-          onBlurCapture={e => e.currentTarget.style.borderColor = '#e2e8f0'}
+            onFocusCapture={e => e.currentTarget.style.borderColor = '#6366f1'}
+            onBlurCapture={e => e.currentTarget.style.borderColor = '#e2e8f0'}
           >
             {/* Attach button */}
             <button

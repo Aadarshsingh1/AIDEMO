@@ -79,7 +79,7 @@ function parseWebhookInput(input) {
  * @param {string} webhookInput - Webhook ID or full n8n URL from Settings
  * @param {object} formData     - Form fields object
  */
-export async function triggerWorkflow(webhookInput, formData) {
+export async function triggerWorkflow(webhookInput, formData, fieldsSchema = []) {
   if (!webhookInput) {
     return { success: false, error: 'No Webhook ID configured for this workflow in Settings.' };
   }
@@ -91,12 +91,10 @@ export async function triggerWorkflow(webhookInput, formData) {
   const body = new FormData();
   const jsonPayload = {};
 
-  Object.entries(formData || {}).forEach(([key, val], idx) => {
+  Object.entries(formData || {}).forEach(([key, val]) => {
     const strVal = String(val ?? '');
     const keysToTry = new Set([
       key,
-      `field-${idx}`,
-      `field_${idx}`,
       key.toLowerCase(),
       key.split(' ').map(w => w.charAt(0).toUpperCase() + w.slice(1).toLowerCase()).join(' '),
       key.replace(/(?:^\w|[A-Z]|\b\w)/g, (letter, index) => index === 0 ? letter.toLowerCase() : letter.toUpperCase()).replace(/\s+/g, ''),
@@ -109,6 +107,20 @@ export async function triggerWorkflow(webhookInput, formData) {
       jsonPayload[k] = strVal;
     });
   });
+
+  // If fieldsSchema is provided, map field-0, field-1 etc. based on schema order to match n8n positional indexing
+  if (Array.isArray(fieldsSchema) && fieldsSchema.length > 0) {
+    fieldsSchema.forEach((f, idx) => {
+      const val = formData[f.key] ?? formData[f.label];
+      if (val !== undefined && val !== null) {
+        const strVal = String(val);
+        body.append(`field-${idx}`, strVal);
+        body.append(`field_${idx}`, strVal);
+        jsonPayload[`field-${idx}`] = strVal;
+        jsonPayload[`field_${idx}`] = strVal;
+      }
+    });
+  }
 
   let lastError = null;
 

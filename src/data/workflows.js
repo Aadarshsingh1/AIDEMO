@@ -73,7 +73,7 @@ export function getWorkflows() {
       name: 'Google Lead Scraper',
       category: 'AI Lead Gen',
       description:
-        'Generate qualified B2B leads for Cordiso products (CRM, HRMS, ERP). Searches Google via Apify, scrapes websites for emails, then AI filters — only real buyers reach your sheet.',
+        'Generate qualified B2B leads for Cordiso products & real estate buyers (CRM, HRMS, ERP, Pune/Mumbai Flats). Searches Google via Apify, scrapes websites for emails, then AI filters — only real buyers reach your sheet.',
       color: 'blue',
       icon: 'Search',
       iconImg: 'https://www.gstatic.com/images/branding/product/2x/googleg_96dp.png',
@@ -94,7 +94,7 @@ export function getWorkflows() {
           key: 'Product Category',
           label: 'Product Category',
           type: 'select',
-          options: ['CRM', 'HRMS', 'ERP', 'Accounting Software', 'Land & Liaising'],
+          options: ['CRM', 'HRMS', 'ERP', 'Land & Liaising', 'Flat in Pune', 'Flat in Mumbai'],
           required: true,
         },
         {
@@ -109,6 +109,7 @@ export function getWorkflows() {
           label: 'Location',
           type: 'text',
           placeholder: 'e.g. India, Pune, Mumbai, USA (leave blank for global)',
+          defaultValue: 'India',
           required: false,
         },
         {
@@ -116,6 +117,7 @@ export function getWorkflows() {
           label: 'Number of Leads',
           type: 'number',
           placeholder: 'e.g. 10',
+          defaultValue: 10,
           required: true,
         },
       ],
@@ -123,7 +125,7 @@ export function getWorkflows() {
       // Google Sheet this workflow writes to (from configService)
       sheetUrl:     getConfig(CONFIG_KEYS.CORDISO_SHEET_EDIT_URL),
       sheetCsvUrl:  getConfig(CONFIG_KEYS.CORDISO_SHEET_CSV_URL),
-      sheetColumns: ['platform','product_category','title','post_url','website','email','phone','followers','description','location','lead_quality','score','decision_maker','company_size','product_fit','buyer_intent_summary','suggested_outreach','scraped_at'],
+      sheetColumns: ['platform','product_category','title','post_url','website','email','phone','followers','description','location','lead_quality','score','decision_maker','company_size','product_fit','buyer_intent_summary','suggested_outreach','bhk_type','preferred_area','budget_range','urgency','scraped_at'],
     },
 
     {
