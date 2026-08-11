@@ -241,7 +241,10 @@ export default function RagChatPage({ onBack }) {
     if (!file) return;
     setPendingFile(null);
 
-    const uploadId = getConfig(CONFIG_KEYS.WEBHOOK_RAG_UPLOAD);
+    let uploadId = getConfig(CONFIG_KEYS.WEBHOOK_RAG_UPLOAD);
+    if (uploadId && uploadId.includes('1bf39e48-86df-44a8')) {
+      uploadId = '1bf39e40-86df-44a0-b9fb-f85b383ba3fd';
+    }
 
     // Show user message with attachment badge
     const userMsgId = Date.now();

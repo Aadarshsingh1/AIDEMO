@@ -70,7 +70,14 @@ const ENV_DEFAULTS = {
 function loadStored() {
   try {
     const raw = localStorage.getItem(STORAGE_KEY);
-    return raw ? JSON.parse(raw) : {};
+    if (!raw) return {};
+    const parsed = JSON.parse(raw);
+    // Auto-correct stale typos in saved localStorage overrides
+    if (parsed.webhookRagUpload && parsed.webhookRagUpload.includes('1bf39e48-86df-44a8')) {
+      parsed.webhookRagUpload = '1bf39e40-86df-44a0-b9fb-f85b383ba3fd';
+      saveStored(parsed);
+    }
+    return parsed;
   } catch {
     return {};
   }
