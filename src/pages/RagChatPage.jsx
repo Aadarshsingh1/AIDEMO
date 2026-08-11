@@ -252,6 +252,11 @@ export default function RagChatPage({ onBack }) {
     const formData = new FormData();
     formData.append('PDF', file);             // Matches user's n8n Form field name "PDF"
     formData.append('Select_Document', file); // Fallback for older triggers
+    formData.append('file', file);
+    formData.append('document', file);
+    formData.append('data', file);
+    formData.append('field-0', file);
+    formData.append('field_0', file);
     const result = await callRagWebhook(uploadId, formData, true);
 
     setIsUploading(false);
