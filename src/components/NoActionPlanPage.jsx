@@ -366,7 +366,7 @@ export default function NoActionPlanPage({ workflow, n8nConfigured, onBack }) {
                 workflow={{
                   ...workflow,
                   name: 'At-Risk Leads',
-                  sheetColumns: ['LeadID', 'CustomerName', 'LeadStatus', 'PreferredProject', 'TotalInteractions', 'DaysSinceLastInteraction', 'ReasonForPriority'],
+                  sheetColumns: ['LeadID', 'CustomerName', 'LeadStatus', 'PreferredProject', 'TotalInteractions', 'DaysSinceLastInteraction', 'AI Opportunity At Risk'],
                 }}
                 csvUrl={aiLeadsCsvUrl}
                 refreshTrigger={leadsRefreshKey}

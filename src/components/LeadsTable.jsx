@@ -61,7 +61,7 @@ function LeadDetailDrawer({ lead, onClose }) {
   if (!lead) return null;
 
   // Detect workflow / lead type
-  const isCrm = !!(lead.CustomerName || lead.LeadID || lead.TEnquiryId || lead.ReasonForPriority || lead['Reason For Priority'] || lead.PreferredProject || lead.Budget || lead.LeadStatus || lead.DaysSinceLastInteraction);
+  const isCrm = !!(lead.CustomerName || lead.LeadID || lead.TEnquiryId || lead.ReasonForPriority || lead['Reason For Priority'] || lead['AI Opportunity At Risk'] || lead['AI Opportunity at Risk'] || lead.PreferredProject || lead.Budget || lead.LeadStatus || lead.DaysSinceLastInteraction);
 
   // Common / Google Maps fields
   const score = lead.leadScore || lead.score || '—';
@@ -72,7 +72,7 @@ function LeadDetailDrawer({ lead, onClose }) {
   const address = lead.address && lead.address !== 'NOT_FOUND' ? lead.address : '';
   const owner = lead.ownerName && lead.ownerName !== 'NOT_FOUND' ? lead.ownerName : (lead.owner || '');
   const icebreaker = lead.icebreaker && lead.icebreaker !== 'NOT_FOUND' ? lead.icebreaker : '';
-  const aiAnalysis = lead.aiAnalysis || lead.aianalysis || lead.AIANALYSIS || lead.ai_analysis || lead.ReasonForPriority || lead['Reason For Priority'] || '';
+  const aiAnalysis = lead.aiAnalysis || lead.aianalysis || lead.AIANALYSIS || lead.ai_analysis || lead.ReasonForPriority || lead['Reason For Priority'] || lead['AI Opportunity At Risk'] || lead['AI Opportunity at Risk'] || '';
 
   // CRM specific fields
   const leadId = lead.LeadID || lead.TEnquiryId || lead['Lead ID'] || lead['TEnquiryId'] || '';
@@ -675,7 +675,12 @@ export default function LeadsTable({ workflow, csvUrl, refreshTrigger }) {
           <thead>
             <tr>
               <th style={{ width: 36 }}>#</th>
-              {cols.map(col => <th key={col}>{col}</th>)}
+              {cols.map(col => {
+                const headerText = /^(ReasonForPriority|Reason For Priority|At Risk|At-Risk|at_risk|atRisk|AI Opportunity At Risk)$/i.test(col)
+                  ? 'AI Opportunity At Risk'
+                  : col;
+                return <th key={col}>{headerText}</th>;
+              })}
             </tr>
           </thead>
           <tbody>
