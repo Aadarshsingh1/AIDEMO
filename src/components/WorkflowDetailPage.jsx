@@ -43,14 +43,14 @@ export default function WorkflowDetailPage({ workflow: initialWorkflow, n8nConfi
 
   const [activeTab, setActiveTab] = useState('run');
   const [formValues, setFormValues] = useState({});
-  const [status, setStatus]         = useState('idle');
-  const [errorMsg, setErrorMsg]     = useState('');
+  const [status, setStatus] = useState('idle');
+  const [errorMsg, setErrorMsg] = useState('');
   const [leadsRefreshKey, setLeadsRefreshKey] = useState(0);
 
   const isRunning = status === 'running';
-  const isDone    = status === 'done';
-  const isError   = status === 'error';
-  const csvUrl    = workflow.sheetCsvUrl || '';
+  const isDone = status === 'done';
+  const isError = status === 'error';
+  const csvUrl = workflow.sheetCsvUrl || '';
 
   const completedStepIdx = useSimulatedSteps(
     workflow.steps,
@@ -117,7 +117,7 @@ export default function WorkflowDetailPage({ workflow: initialWorkflow, n8nConfi
 
   // Overall progress %
   const totalSteps = workflow.steps.length;
-  const doneSteps  = isDone ? totalSteps : Math.max(0, completedStepIdx + 1);
+  const doneSteps = isDone ? totalSteps : Math.max(0, completedStepIdx + 1);
   const progressPct = totalSteps > 0 ? Math.round((doneSteps / totalSteps) * 100) : 0;
 
   return (
@@ -174,8 +174,8 @@ export default function WorkflowDetailPage({ workflow: initialWorkflow, n8nConfi
         flexShrink: 0,
       }}>
         {[
-          { id: 'run',   label: 'Run Workflow', icon: <Play size={13} /> },
-          { id: 'leads', label: 'Leads Table',  icon: <Database size={13} /> },
+          { id: 'run', label: 'Run Workflow', icon: <Play size={13} /> },
+          { id: 'leads', label: 'Leads Table', icon: <Database size={13} /> },
         ].map(tab => (
           <button
             key={tab.id}
@@ -389,9 +389,9 @@ export default function WorkflowDetailPage({ workflow: initialWorkflow, n8nConfi
                           transition: 'all 0.3s ease',
                         }}>
                           <div className={`step-dot ${state}`}>
-                            {state === 'done'    ? <CheckCircle2 size={12} /> :
-                             state === 'running' ? <Loader2 size={12} style={{ animation: 'spin 1s linear infinite' }} /> :
-                             idx + 1}
+                            {state === 'done' ? <CheckCircle2 size={12} /> :
+                              state === 'running' ? <Loader2 size={12} style={{ animation: 'spin 1s linear infinite' }} /> :
+                                idx + 1}
                           </div>
                           <div className="step-content">
                             <div className="step-name">{step.label}</div>

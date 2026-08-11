@@ -131,7 +131,7 @@ export async function triggerWorkflow(webhookInput, formData, fieldsSchema = [])
 
     try {
       console.log(`[n8nService] Sending ${candidate.isFormData ? 'multipart/form-data' : 'JSON'} to ${targetUrl}`);
-      
+
       const payload = candidate.isFormData ? body : jsonPayload;
       // Omit Content-Type header for FormData so Axios auto-generates multipart boundary
       const headers = candidate.isFormData
@@ -146,21 +146,8 @@ export async function triggerWorkflow(webhookInput, formData, fieldsSchema = [])
       console.log(`[n8nService] Workflow trigger success!`, res.data);
       return { success: true, data: res.data };
     } catch (err) {
-      const status = err.response?.status;
-      console.warn(`[n8nService] Endpoint ${targetUrl} error:`, status, err.response?.data || err.message);
+      console.warn(`[n8nService] Endpoint ${targetUrl} error:`, err.response?.status, err.response?.data || err.message);
       lastError = err;
-
-      // Only early-exit on 500 from /webhook/ endpoints.
-      // /form/ endpoints return 500 when there's no form trigger for that ID — we should continue.
-      // /webhook/ returning 500 means the workflow ran but a node failed internally — stop there.
-      if (status === 500 && targetUrl.includes('/webhook/') && !targetUrl.includes('/webhook-test/')) {
-        const detail = err.response?.data?.message
-          || 'A node inside your n8n workflow threw an error.';
-        return {
-          success: false,
-          error: `n8n Workflow Error (500): ${detail} — Open n8n Executions tab to see which node failed.`,
-        };
-      }
     }
   }
 

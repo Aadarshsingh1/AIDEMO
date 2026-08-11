@@ -18,7 +18,7 @@ function isSet(val) {
 function StatusDot({ value }) {
   return isSet(value)
     ? <CheckCircle size={14} color="#16a34a" />
-    : <XCircle    size={14} color="#dc2626" />;
+    : <XCircle size={14} color="#dc2626" />;
 }
 
 function InputField({ label, hint, placeholder, value, onChange, isSecret = false, isUrl = false }) {
@@ -45,7 +45,7 @@ function InputField({ label, hint, placeholder, value, onChange, isSecret = fals
             outline: 'none', transition: 'all 0.2s',
           }}
           onFocus={e => { e.target.style.borderColor = '#6366f1'; e.target.style.boxShadow = '0 0 0 3px rgba(99,102,241,0.12)'; e.target.style.background = '#fff'; }}
-          onBlur={e =>  { e.target.style.borderColor = invalid ? '#ef4444' : isSet(value) ? '#6366f1' : '#e2e8f0'; e.target.style.boxShadow = 'none'; e.target.style.background = '#f8fafc'; }}
+          onBlur={e => { e.target.style.borderColor = invalid ? '#ef4444' : isSet(value) ? '#6366f1' : '#e2e8f0'; e.target.style.boxShadow = 'none'; e.target.style.background = '#f8fafc'; }}
         />
         {isSecret && (
           <button type="button" onClick={() => setShow(s => !s)}
@@ -126,7 +126,7 @@ function OverviewCard({ icon: Icon, iconColor, iconBg, title, subtitle, fields, 
 }
 // ─── Detail View (opened when card is clicked) ────────────────────────────────
 function DetailView({ config, onBack, onSave }) {
-  const [form, setForm]   = useState({ ...config.initialValues });
+  const [form, setForm] = useState({ ...config.initialValues });
   const [saved, setSaved] = useState(false);
 
   function set(key, val) { setForm(prev => ({ ...prev, [key]: val })); }
@@ -216,7 +216,7 @@ function DetailView({ config, onBack, onSave }) {
 
 // ─── Main SettingsPage ────────────────────────────────────────────────────────
 export default function SettingsPage({ onConfigSaved }) {
-  const [cfg, setCfg]       = useState({});
+  const [cfg, setCfg] = useState({});
   const [hasCustom, setHasCustom] = useState(false);
   const [activeView, setActiveView] = useState(null); // null = overview
 
@@ -228,7 +228,7 @@ export default function SettingsPage({ onConfigSaved }) {
 
   function handleSave(values) {
     const current = getAllConfig();
-    const merged  = { ...current, ...values };
+    const merged = { ...current, ...values };
     saveConfig(merged);
     setCfg(getAllConfig());
     setHasCustom(hasCustomConfig());
@@ -270,7 +270,7 @@ export default function SettingsPage({ onConfigSaved }) {
       icon: Webhook,
       iconColor: '#16a34a',
       iconBg: '#dcfce7',
-      title: 'Google Maps Lead Scraper',
+      title: 'Lead Scraper',
       subtitle: 'Webhook trigger + Google Sheet for Maps scraping workflow',
       fields: [
         {
@@ -302,7 +302,7 @@ export default function SettingsPage({ onConfigSaved }) {
       icon: FileSpreadsheet,
       iconColor: '#2563eb',
       iconBg: '#dbeafe',
-      title: 'Google Lead Scraper (Cordiso)',
+      title: 'Market Research Assistant (Cordiso)',
       subtitle: 'Webhook trigger + Google Sheet for Cordiso B2B lead workflow',
       fields: [
         {
@@ -493,8 +493,8 @@ export default function SettingsPage({ onConfigSaved }) {
                 fontSize: 12, fontWeight: 600, color: '#dc2626', cursor: 'pointer',
                 transition: 'all 0.2s',
               }}
-              onMouseEnter={e => { e.currentTarget.style.background = '#fee2e2'; }}
-              onMouseLeave={e => { e.currentTarget.style.background = '#fef2f2'; }}>
+                onMouseEnter={e => { e.currentTarget.style.background = '#fee2e2'; }}
+                onMouseLeave={e => { e.currentTarget.style.background = '#fef2f2'; }}>
                 <RotateCcw size={13} />
                 Reset All to .env
               </button>
