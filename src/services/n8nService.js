@@ -150,11 +150,11 @@ export async function triggerWorkflow(webhookInput, formData, fieldsSchema = [])
       console.warn(`[n8nService] Endpoint ${targetUrl} error:`, status, err.response?.data || err.message);
       lastError = err;
 
-      // 500 = n8n received & started the workflow but a node failed inside.
-      // Stop trying other endpoints — the webhook IS registered, the workflow just has an internal error.
-      if (status === 500) {
+      // Only early-exit on 500 from /webhook/ endpoints.
+      // /form/ endpoints return 500 when there's no form trigger for that ID — we should continue.
+      // /webhook/ returning 500 means the workflow ran but a node failed internally — stop there.
+      if (status === 500 && targetUrl.includes('/webhook/') && !targetUrl.includes('/webhook-test/')) {
         const detail = err.response?.data?.message
-          || (typeof err.response?.data === 'string' ? null : null)
           || 'A node inside your n8n workflow threw an error.';
         return {
           success: false,
