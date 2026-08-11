@@ -52,6 +52,15 @@ async function callRagWebhook(webhookId, payload, isFile = false) {
       return { success: true, data: res.data };
     } catch (e) {
       lastErr = e;
+      // If n8n responded with 500 (Internal Server Error), the endpoint exists & was called,
+      // but an internal node failed inside n8n (e.g. Mistral API key, Gemini Embeddings, Pinecone index).
+      if (e.response?.status === 500) {
+        const detail = e.response?.data?.message || 'A node inside your n8n workflow threw an error.';
+        return {
+          success: false,
+          error: `n8n Workflow Execution Error (HTTP 500): ${detail}. Open your n8n Executions tab to see which node failed (e.g. Mistral Cloud / Gemini / Pinecone credentials).`
+        };
+      }
       // If proxy returns 413 (Payload Too Large due to Vercel 4.5MB body cap), retry directly
       if (e.response?.status === 413 && targetUrl !== rawUrl) {
         try {
