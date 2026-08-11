@@ -66,7 +66,10 @@ async function callRagWebhook(webhookId, payload, isFile = false) {
       }
     }
   }
-  const msg = lastErr?.response?.data?.message || lastErr?.message || 'Network Error';
+  let msg = lastErr?.response?.data?.message || lastErr?.message || 'Network Error';
+  if (lastErr?.response?.status === 404) {
+    msg = '404 Not Found — Webhook ID is not active or incorrect in Settings. Please activate your workflow in n8n (toggle Published ON) and verify the Webhook/Form ID in Settings.';
+  }
   return { success: false, error: msg };
 }
 
