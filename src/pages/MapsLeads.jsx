@@ -1,12 +1,16 @@
 import { useState } from 'react';
 import LeadsTable from '../components/LeadsTable';
 import { WORKFLOWS } from '../data/workflows';
+import { getConfig, CONFIG_KEYS } from '../services/configService';
+import { formatGoogleSheetCsvUrl } from '../services/sheetsService';
 
-const MAPS_WORKFLOW = WORKFLOWS.find(w => w.id === 'google-maps-leads');
-
-// csvUrl is now read from workflow.sheetCsvUrl which is set via .env (VITE_MAPS_SHEET_CSV_URL)
 export default function MapsLeadsPage({ refreshTrigger }) {
-  const csvUrl = MAPS_WORKFLOW?.sheetCsvUrl || '';
+  const workflow = WORKFLOWS.find(w => w.id === 'google-maps-leads');
+  const csvUrl =
+    getConfig(CONFIG_KEYS.MAPS_SHEET_CSV_URL) ||
+    formatGoogleSheetCsvUrl(getConfig(CONFIG_KEYS.MAPS_SHEET_EDIT_URL)) ||
+    workflow?.sheetCsvUrl ||
+    '';
 
   return (
     <div className="page">
@@ -20,7 +24,7 @@ export default function MapsLeadsPage({ refreshTrigger }) {
       </div>
 
       <LeadsTable
-        workflow={MAPS_WORKFLOW}
+        workflow={workflow}
         csvUrl={csvUrl}
         refreshTrigger={refreshTrigger}
       />

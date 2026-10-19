@@ -46,9 +46,9 @@ const ENV_DEFAULTS = {
   [CONFIG_KEYS.N8N_BASE_URL]: import.meta.env.VITE_N8N_BASE_URL || '',
   [CONFIG_KEYS.WEBHOOK_GOOGLE_MAPS]: import.meta.env.VITE_WEBHOOK_GOOGLE_MAPS || '',
   [CONFIG_KEYS.WEBHOOK_CORDISO_LEADS]: import.meta.env.VITE_WEBHOOK_CORDISO_LEADS || '',
-  [CONFIG_KEYS.MAPS_SHEET_EDIT_URL]: import.meta.env.VITE_MAPS_SHEET_EDIT_URL || '',
+  [CONFIG_KEYS.MAPS_SHEET_EDIT_URL]: import.meta.env.VITE_MAPS_SHEET_EDIT_URL || 'https://docs.google.com/spreadsheets/d/1qj-xYGnDzodwDRVAHsYoKFgNtShDTYnjy3uH4HbUKbE/edit?gid=0#gid=0',
   [CONFIG_KEYS.CORDISO_SHEET_EDIT_URL]: import.meta.env.VITE_CORDISO_SHEET_EDIT_URL || '',
-  [CONFIG_KEYS.MAPS_SHEET_CSV_URL]: import.meta.env.VITE_MAPS_SHEET_CSV_URL || '',
+  [CONFIG_KEYS.MAPS_SHEET_CSV_URL]: import.meta.env.VITE_MAPS_SHEET_CSV_URL || 'https://docs.google.com/spreadsheets/d/1qj-xYGnDzodwDRVAHsYoKFgNtShDTYnjy3uH4HbUKbE/export?format=csv&gid=0',
   [CONFIG_KEYS.CORDISO_SHEET_CSV_URL]: import.meta.env.VITE_CORDISO_SHEET_CSV_URL || '',
   [CONFIG_KEYS.WEBHOOK_RAG_UPLOAD]: import.meta.env.VITE_WEBHOOK_RAG_UPLOAD || 'b7430c49-07df-4ea8-971c-4340d99bc456',
   [CONFIG_KEYS.WEBHOOK_RAG_CHAT]: import.meta.env.VITE_WEBHOOK_RAG_CHAT || '911eeda3-33e7-42b7-8054-4cffc04f36a4',
@@ -84,6 +84,18 @@ function loadStored() {
     // Auto-correct stale Google Maps Lead Scraper webhook ID
     if (parsed.webhookGoogleMaps === 'a4651de5-023b-46b6-876c-d69102ea548a') {
       parsed.webhookGoogleMaps = '43162508-8e41-49a0-b50f-d476d7204b33';
+      changed = true;
+    }
+
+    // Auto-correct stale Google Maps Lead Scraper sheet edit URL
+    if (parsed.mapsSheetEditUrl && parsed.mapsSheetEditUrl.includes('1uN4Jl2-2kc3ACuV6wv1XA-2WOCS3r00hcHe08R7kxfY')) {
+      parsed.mapsSheetEditUrl = 'https://docs.google.com/spreadsheets/d/1qj-xYGnDzodwDRVAHsYoKFgNtShDTYnjy3uH4HbUKbE/edit?gid=0#gid=0';
+      changed = true;
+    }
+
+    // Auto-correct stale Google Maps Lead Scraper CSV URL
+    if (parsed.mapsSheetCsvUrl && (parsed.mapsSheetCsvUrl.includes('2PACX-1vQd0uz4SeghsGbN7v2p9ZHQ02LEkWFUZmap4aCY9NUj9C4H2xSC3JUes_w9Bn5v9lQnV5gUFyh7M6Fx') || parsed.mapsSheetCsvUrl.includes('1uN4Jl2-2kc3ACuV6wv1XA-2WOCS3r00hcHe08R7kxfY'))) {
+      parsed.mapsSheetCsvUrl = 'https://docs.google.com/spreadsheets/d/1qj-xYGnDzodwDRVAHsYoKFgNtShDTYnjy3uH4HbUKbE/export?format=csv&gid=0';
       changed = true;
     }
 

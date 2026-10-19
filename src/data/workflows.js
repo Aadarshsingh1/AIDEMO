@@ -6,6 +6,7 @@
 //    To change accounts: use the Settings page in the UI — no file edits needed!
 
 import { getConfig, CONFIG_KEYS } from '../services/configService';
+import { formatGoogleSheetCsvUrl } from '../services/sheetsService';
 
 const MULTI_PLATFORM_LOGO = `data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" width="64" height="64"><rect width="64" height="64" rx="14" fill="%230f172a"/><line x1="20" y1="20" x2="44" y2="44" stroke="%23334155" stroke-width="2"/><line x1="44" y1="20" x2="20" y2="44" stroke="%23334155" stroke-width="2"/><circle cx="32" cy="32" r="16" fill="none" stroke="%2338bdf8" stroke-width="1.5" stroke-dasharray="3 2"/><circle cx="20" cy="20" r="10" fill="%230A66C2"/><text x="20" y="24" font-family="sans-serif" font-size="11" font-weight="bold" fill="%23ffffff" text-anchor="middle">in</text><circle cx="44" cy="20" r="10" fill="%23FF4500"/><circle cx="44" cy="19" r="4.5" fill="%23ffffff"/><circle cx="42" cy="18.5" r="1" fill="%23FF4500"/><circle cx="46" cy="18.5" r="1" fill="%23FF4500"/><circle cx="20" cy="44" r="10" fill="%231877F2"/><text x="20" y="48.5" font-family="sans-serif" font-size="13" font-weight="900" fill="%23ffffff" text-anchor="middle">f</text><circle cx="44" cy="44" r="10" fill="%23E1306C"/><rect x="39.5" y="39.5" width="9" height="9" rx="2.5" fill="none" stroke="%23ffffff" stroke-width="1.5"/><circle cx="44" cy="44" r="2.2" fill="none" stroke="%23ffffff" stroke-width="1.2"/><circle cx="32" cy="32" r="7" fill="%230284c7" stroke="%23ffffff" stroke-width="1.5"/><path d="M30 30 L34 34 M33 30 A 2 2 0 1 0 29 30 A 2 2 0 1 0 33 30" stroke="%23ffffff" stroke-width="1.2" fill="none" stroke-linecap="round"/></svg>`;
 
@@ -65,7 +66,7 @@ export function getWorkflows() {
 
       // Google Sheet this workflow writes to (from configService)
       sheetUrl: getConfig(CONFIG_KEYS.MAPS_SHEET_EDIT_URL),
-      sheetCsvUrl: getConfig(CONFIG_KEYS.MAPS_SHEET_CSV_URL),
+      sheetCsvUrl: getConfig(CONFIG_KEYS.MAPS_SHEET_CSV_URL) || formatGoogleSheetCsvUrl(getConfig(CONFIG_KEYS.MAPS_SHEET_EDIT_URL)),
       sheetColumns: ['businessName', 'website', 'phone', 'address', 'email', 'ownerName', 'socialLinks', 'leadScore', 'icebreaker'],
     },
 
