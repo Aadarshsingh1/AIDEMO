@@ -75,9 +75,15 @@ function loadStored() {
 
     let changed = false;
 
-    // Auto-correct stale wrong n8n base URL (amansinghhhh → aadarshh)
-    if (parsed.n8nBaseUrl && parsed.n8nBaseUrl.includes('amansinghhhh.app.n8n.cloud')) {
-      parsed.n8nBaseUrl = 'https://aadarshh.app.n8n.cloud';
+    // Auto-correct stale wrong n8n base URL (amansinghhhh or aadarshh → aadarsh075)
+    if (parsed.n8nBaseUrl && (parsed.n8nBaseUrl.includes('amansinghhhh.app.n8n.cloud') || parsed.n8nBaseUrl.includes('aadarshh.app.n8n.cloud'))) {
+      parsed.n8nBaseUrl = 'https://aadarsh075.app.n8n.cloud';
+      changed = true;
+    }
+
+    // Auto-correct stale Google Maps Lead Scraper webhook ID
+    if (parsed.webhookGoogleMaps === 'a4651de5-023b-46b6-876c-d69102ea548a') {
+      parsed.webhookGoogleMaps = '43162508-8e41-49a0-b50f-d476d7204b33';
       changed = true;
     }
 

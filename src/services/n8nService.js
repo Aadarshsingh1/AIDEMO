@@ -32,7 +32,7 @@ function parseWebhookInput(input) {
     id = parts[parts.length - 1];
   }
 
-  const base = baseUrl || 'https://aadarshh.app.n8n.cloud';
+  const base = baseUrl || 'https://aadarsh075.app.n8n.cloud';
   const proxyBase = '/n8n-proxy';
   const rawCandidates = [];
 
@@ -125,9 +125,7 @@ export async function triggerWorkflow(webhookInput, formData, fieldsSchema = [])
   let lastError = null;
 
   for (const candidate of candidates) {
-    const targetUrl = candidate.url.startsWith(baseUrl)
-      ? candidate.url.replace(baseUrl, '/n8n-proxy')
-      : candidate.url;
+    const targetUrl = candidate.url;
 
     try {
       console.log(`[n8nService] Sending ${candidate.isFormData ? 'multipart/form-data' : 'JSON'} to ${targetUrl}`);
@@ -180,9 +178,7 @@ export async function triggerWorkflowWithFile(webhookInput, file, fieldName = 'L
   let lastError = null;
 
   for (const candidate of candidates) {
-    const targetUrl = candidate.url.startsWith(baseUrl)
-      ? candidate.url.replace(baseUrl, '/n8n-proxy')
-      : candidate.url;
+    const targetUrl = candidate.url;
 
     try {
       console.log(`[n8nService] Uploading file "${file.name}" to ${targetUrl}`);
